@@ -1,0 +1,62 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company:
+// Engineer: 
+// 
+// Create Date: 21.11.2023 19:59:40
+// Design Name: 
+// Module Name: 8bitalu_tb
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module test_bench();
+
+    reg [7:0] a,b;
+    reg [7:0] sum, difference;
+    reg [7:0] funsel;
+    wire [7:0] result;
+    wire zero;
+    integer i;
+    alu8 uutA(funsel, a, b, zero, result);
+    initial begin 
+    b = 8'b10000011;
+    a = 8'b01100010;
+    $display("\n\n");
+    for (i = 0; i < 8; i = i + 1)
+    begin
+        funsel = i;
+        test_case;
+    end 
+    b = 8'b10000011; //131
+    a = 8'b01100010; //98
+    test_case;
+    $finish;
+   end
+ task test_case;
+ begin
+ #1;
+ case (i)
+    3'b000: $display("\nTesting the AND function");
+    3'b001: $display("\nTesting the OR function");
+    3'b010: $display("\nTesting the Addition function");
+    3'b110: $display("\nTesting the Subraction function");
+    3'b111: $display("\nTesting the Set Less Than function");
+    default: $display("\nInvalid function Selection Code");
+ endcase
+  if (i == 2)
+     i = 5;
+ $display ("a = %b, b = %b, result = %b, zero = %b", a, b, result, zero);
+ end
+ endtask
+endmodule
